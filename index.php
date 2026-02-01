@@ -38,13 +38,37 @@ switch ($cmd){
         }
         mark($data, $filename, $args[1], 'done');
         break;
+    case 'mark-in-progress':
+        if(!isset($args[1])){
+            echo "No id was provided";
+            break;
+        }
+        mark($data, $filename, $args[1], 'in-progress');
+        break;
+    case 'mark-todo':
+        if(!isset($args[1])){
+            echo "No id was provided";
+            break;
+        }
+        mark($data, $filename, $args[1], 'todo');
+        break;
 }
 
 function mark(array $tasks, string $filename, int $id, string $status): void
 {
-    $task = array_filter($tasks, fn($var)=> $var->id == $id);
-    $task = $task->status = $status;
-    print_r($task);
+    $count = count($tasks);
+    for ($i = 0; $i<$count; $i++){
+        if($tasks[$i]->id == $id){
+            $tasks[$i]->status = $status;
+            $tasks[$i]->updated_at = date("Y-m-d H:i:s");
+        }
+    }
+    file_put_contents(
+        $filename,
+        json_encode($tasks, JSON_PRETTY_PRINT)
+    );
+
+    echo "Task updated successfully";
 }
 
 function addTask(array $tasks, string $filename, string $description, string $status): void
