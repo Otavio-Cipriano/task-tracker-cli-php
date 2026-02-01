@@ -24,23 +24,45 @@ switch ($cmd){
         showTasks($data);
         break;
     case 'add':
-        addTask($data,$filename,$args[1], $args[2]);
-
+        if (!isset($args[1])) {
+            echo "No description was provided";
+            break;
+        }
+        $status = $args[2] ?? 'todo';
+        addTask($data, $filename, $args[1], $status);
+        break;
+    case 'mark-done':
+        if(!isset($args[1])){
+            echo "No id was provided";
+            break;
+        }
+        mark($data, $filename, $args[1], 'done');
+        break;
 }
 
-function addTask($tasks, $filename, $description, $status): void
+function mark(array $tasks, string $filename, int $id, string $status): void
 {
-    if(!isset($description)) {
-        echo "Description was not provided";
-        return;
-    }
-    $status = $status ?? 'todo';
-    $tasks = [...$tasks, createTask(generateId($tasks), $description, $status)];
-    $file = fopen($filename, "w");
-    fwrite($file, json_encode($tasks, JSON_PRETTY_PRINT));
-    fclose($file);
-    echo "Task added succesfully";
+    $task = array_filter($tasks, fn($var)=> $var->id == $id);
+    $task = $task->status = $status;
+    print_r($task);
 }
+
+function addTask(array $tasks, string $filename, string $description, string $status): void
+{
+    $tasks[] = createTask(
+        generateId($tasks),
+        $description,
+        $status
+    );
+
+    file_put_contents(
+        $filename,
+        json_encode($tasks, JSON_PRETTY_PRINT)
+    );
+
+    echo "Task added successfully";
+}
+
 
 function createTask($id, $desc, $status): object
 {
@@ -56,7 +78,7 @@ function createTask($id, $desc, $status): object
 function showTasks($tasks): void
 {
     foreach ($tasks as $task){
-        echo "\n| 1 | ".$task->description." | ".$task->status." |\n";
+        echo "\n". $task->id . "# ".$task->description." | ".$task->status;
     }
 }
 
