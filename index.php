@@ -52,6 +52,33 @@ switch ($cmd){
         }
         mark($data, $filename, $args[1], 'todo');
         break;
+    case 'delete':
+        if(!isset($args[1])){
+            echo "No id was provided";
+            break;
+        }
+        delete($data, $filename, $args[1]);
+        break;
+}
+
+function delete(array $tasks, string $filename, int $id): void{
+    $found = false;
+
+    for ($i = 0; $i < count($tasks); $i++) {
+        if ($tasks[$i]->id === $id) {
+            array_splice($tasks, $i, 1);
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        echo "No task corresponded to that id";
+        return;
+    }
+
+    file_put_contents($filename, json_encode($tasks, JSON_PRETTY_PRINT));
+    echo "Task deleted successfully";
 }
 
 function mark(array $tasks, string $filename, int $id, string $status): void
