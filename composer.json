@@ -11,5 +11,8 @@
             "email": "otavio.b.cipriano@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*"
+    }
 }
