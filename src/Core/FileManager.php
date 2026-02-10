@@ -13,6 +13,13 @@ class FileManager
 
     public function loadFile(): array
     {
+        if(!file_exists($this->filename)){
+            $file = fopen($this->filename, 'a+');
+            fwrite($file, "[]");
+            fclose($file);
+            return [];
+        }
+
         $file = fopen($this->filename, "r");
         $data = json_decode(fread($file,filesize($this->filename)));
         fclose($file);

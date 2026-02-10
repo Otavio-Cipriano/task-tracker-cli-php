@@ -2,11 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Cli\CommandDispatcher;
-use App\Core\FileManager;
 use App\Core\TaskManager;
 use App\Core\TaskService;
-
+use App\Cli\CommandDispatcher;
+use App\Core\FileManager;
 
 $filename = 'src/data.json';
 $fileManager = new FileManager($filename);

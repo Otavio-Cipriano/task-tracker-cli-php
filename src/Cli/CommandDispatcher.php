@@ -3,7 +3,6 @@
 namespace App\Cli;
 
 use App\Core\TaskManager;
-use App\Core\TaskService;
 
 class CommandDispatcher
 {
@@ -16,7 +15,14 @@ class CommandDispatcher
 
     private function commandHandler(): array {
         return [
-            'add' => fn($args)=> $this->taskManager->add($args)
+            'add' => fn($args)=> $this->taskManager->add($args),
+            'list' => fn($args)=> $this->taskManager->list($args),
+            'mark-todo' => fn($args)=>$this->taskManager->mark([...$args, 'todo']),
+            'mark-done' => fn($args)=>$this->taskManager->mark([...$args, 'done']),
+            'mark-in-progress' => fn($args)=>$this->taskManager->mark([...$args, 'in-progress']),
+            'delete' => fn($args) => $this->taskManager->delete($args),
+            'update' => fn($args) => $this->taskManager->update($args),
+            'help' => fn($args) => $this->taskManager->help()
         ];
     }
 

@@ -14,7 +14,7 @@ class TaskService
         $this->tasks = $tasks;
     }
 
-    public function addTask(string $description, TaskStatus $status)
+    public function addTask(string $description, TaskStatus $status): void
     {
         $task = $this->createTask($this->generateId($this->tasks), $description, $status);
 
@@ -25,30 +25,55 @@ class TaskService
         echo "Task created succesfully ";
 
     }
-    public function listTasks()
-    {
 
+    public function listTasks(?TaskStatus $status): array
+    {
+        if (count($this->tasks) < 1) {
+            echo "No tasks";
+            return [];
+        }
+
+        if ($status != null) {
+            print_r(array_filter(
+                $this->tasks,
+                fn($task) => $task->status === $status));
+            return array_filter(
+                $this->tasks,
+                fn($task) => $task->status === $status);
+        }
+
+        print_r($this->tasks);
+        return $this->tasks;
     }
+
     public function deleteTask()
     {
 
     }
-    public function markTask()
-    {
 
+    public function markTask(int $id, TaskStatus $status)
+    {
+        $count = count($this->tasks);
+        for ($i = 0; $i<$count; $i++){
+            if($this->tasks[$i]->id == $id){
+                $this->tasks[$i]->status = $status;
+                $this->tasks[$i]->updated_at = date("Y-m-d H:i:s");
+            }
+        }
+
+        $this->fileManager->writeFile($this->tasks);
+        echo "Task updated successfully";
     }
+
     public function updateTask()
     {
 
     }
 
-    public function help(){
-        echo "Only valid commands: add, list, update, mark, delete";
-    }
 
     function createTask($id, $desc, $status): object
     {
-        return (object) [
+        return (object)[
             'id' => $id,
             'description' => $desc,
             'status' => $status,
