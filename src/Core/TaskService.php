@@ -46,9 +46,24 @@ class TaskService
         return $this->tasks;
     }
 
-    public function deleteTask()
+    public function deleteTask(int $id): void
     {
+        $found = false;
+        for ($i = 0; $i < count($this->tasks); $i++) {
+            if ($this->tasks[$i]->id === $id) {
+                array_splice($this->tasks, $i, 1);
+                $found = true;
+                break;
+            }
+        }
 
+        if (!$found) {
+            echo "No task corresponded to that id";
+            return;
+        }
+
+        $this->fileManager->writeFile($this->tasks);
+        echo "Task $id deleted successfully";
     }
 
     public function markTask(int $id, TaskStatus $status)
@@ -62,12 +77,22 @@ class TaskService
         }
 
         $this->fileManager->writeFile($this->tasks);
-        echo "Task updated successfully";
+        echo "Task $id marked successfully";
     }
 
-    public function updateTask()
+    public function updateTask(int $id, string $description, ?TaskStatus $status): void
     {
+        $count = count($this->tasks);
+        for ($i = 0; $i<$count; $i++){
+            if($this->tasks[$i]->id == $id){
+                $this->tasks[$i]->status = $status?? $this->tasks[$i]->status;
+                $this->tasks[$i]->description = $description;
+                $this->tasks[$i]->updated_at = date("Y-m-d H:i:s");
+            }
+        }
 
+        $this->fileManager->writeFile($this->tasks);
+        echo "Task $id updated successfully";
     }
 
 

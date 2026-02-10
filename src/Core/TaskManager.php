@@ -53,8 +53,42 @@ class TaskManager
         $status = TaskStatus::tryFrom($args[1]);
         $this->taskService->markTask($args[0],$status);
     }
-    function update(array $args) {}
-    function delete(array $args) {}
+    function update(array $args) {
+
+        if (!isset($args[0])) {
+            echo "No id provided";
+            return null;
+        }
+
+        if (!isset($args[1])) {
+            echo "No description provided";
+            return null;
+        }
+
+        $status = null;
+
+        if (isset($args[2])) {
+            $status = TaskStatus::tryFrom($args[2]);
+
+            if ($status === null) {
+                echo "Invalid status";
+                return null;
+            }
+        }
+
+        $id = (int) $args[0];
+
+        $this->taskService->updateTask($id, $args[1], $status);
+    }
+    function delete(array $args) {
+        if (!isset($args[0])) {
+            echo "No id provided";
+            return null;
+        }
+
+        $id = (int) $args[0];
+        $this->taskService->deleteTask($id);
+    }
 
     public function help(): void {
         echo "Only valid commands: add, list, update, mark, delete";
