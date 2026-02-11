@@ -14,7 +14,7 @@ class TaskRepository
         $this->pdo = Connection::get();
     }
 
-    public function create(string $description, TaskStatus $status): void
+    public function create(string $description, TaskStatus $status): Task
     {
         $sql = "INSERT INTO tasks (description, status) VALUES (:description, :status)";
         $stmt = $this->pdo->prepare($sql);
@@ -22,7 +22,13 @@ class TaskRepository
                 'description' => $description,
                 'status' => $status->value
         ]);
+
+        $id = (int) $this->pdo->lastInsertId();
+
+        return new Task($id, $description, $status);
     }
+
+    //TODO: Return the tasks created
 
     public function findByStatus(TaskStatus $status): array{
         $sql = "SELECT * FROM tasks WHERE (status == :status)";
@@ -32,6 +38,7 @@ class TaskRepository
         ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public function findAll(): array{
         $stmt = $this->pdo->query("SELECT * FROM tasks");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -40,7 +40,6 @@ class TaskService
 
     public function markTask(int $id, TaskStatus $status)
     {
-
         $this->taskRepository->updateStatus($id, status: $status);
         echo "Task $id marked successfully";
     }
