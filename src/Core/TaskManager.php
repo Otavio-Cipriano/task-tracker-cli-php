@@ -42,8 +42,14 @@ class TaskManager
             return [];
         }
 
-        $this->taskService->listTasks($args[0]);
-        return [];
+        $status = TaskStatus::tryFrom($args[0]);
+
+        if ($status === null) {
+            echo "Invalid Status";
+            return [];
+        }
+
+        return $this->taskService->listTasks($status);
     }
     function mark(array $args) {
         if(!isset($args[0])){
