@@ -7,12 +7,9 @@ use App\Core\TaskService;
 use App\Cli\CommandDispatcher;
 use App\Core\FileManager;
 
-$filename = 'src/data.json';
-$fileManager = new FileManager($filename);
 
-$tasks = $fileManager->loadFile();
 
-$taskService = new TaskService($fileManager,$tasks);
+$taskService = new TaskService();
 $taskManager = new TaskManager($taskService);
 $cli = new CommandDispatcher($taskManager);
 
