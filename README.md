@@ -7,13 +7,13 @@ CLI application developed in PHP for task management, with SQLite persistence an
 
 - [Objective](#objective)
 - [Features](#features)
-- [Technical Decisions](#-technical-decisions)
-- [Limitations and Future Improvements](#-limitations-and-future-improvements)
-- [Technologies](#-technologies)
-- [How to Run](#-how-to-run)
-- [Lessons Learned](#-lessons-learned)
+- [Technical Decisions](#technical-decisions)
+- [Limitations and Future Improvements](#limitations-and-future-improvements)
+- [Technologies](#technologies)
+- [How to Run](#how-to-run)
+- [Lessons Learned](#lessons-learned)
 
-## 🎯 Objective
+## Objective
 
 This project was developed with the goal of practicing:
 
@@ -28,14 +28,14 @@ The project also served as preparation for backend API development.
 
 ## Features
 
-- [x] User can add a task with description and status being optional.
-- [x] User can list all tasks.
-- [x] User can list tasks by status.
-- [x] User can mark task with a status.
-- [x] User can update task with a description and status.
-- [x] User can delete task.
+- ✅ User can add a task with description and status being optional.
+- ✅ User can list all tasks.
+- ✅ User can list tasks by status.
+- ✅ User can mark task with a status.
+- ✅ User can update task with a description and status.
+- ✅ User can delete task.
 
-## 🧠 Technical Decisions
+## Technical Decisions
 
 ### Using SQLite
 Chosen for its simple configuration and suitability for local applications and prototypes.
@@ -50,7 +50,7 @@ The application was structured into the following layers:
 - Service → Business rules
 - Repository → Data access
 
-## ⚠️ Limitations and Future Improvements
+## Limitations and Future Improvements
 
 During development, some responsibilities were temporarily coupled to facilitate quick testing, such as:
 
@@ -64,13 +64,13 @@ Other possible improvements:
 - Creation of automated tests
 - Transformation of the project into a REST API
 
-## 🛠️ Technologies
+## Technologies
 
 - PHP 8+
 - PDO
 - SQLite
 
-## ▶️ How to Run
+## How to Run
 
 ```bash
 git clone ...
@@ -151,7 +151,26 @@ description. If you only want to update the status, use mark.
   delete <id>
 ```
 
-## 📚 Lessons Learned
+## Data Structure
+
+```json
+[
+  {
+    "id": 1,
+    "description": "Comprar leite",
+    "status": "todo",
+    "CreatedAt": "2026-01-28 12:00:00",
+    "UpdatedAt": "2026-01-28 12:00:00"
+  }
+]
+```
+
+### Status avaible:
+- `todo` - Task to do
+- `in-progress` - Task in progress
+- `done` - Task Done
+
+## Lessons Learned
 - This was my first time using SQLite with PDO. Until then, I had only used it with MySQL. It was also the first project I developed entirely using PHPStorm.
 - During development, I decided to use enums, which are a 
 recent feature in PHP 8. They are quite different from the 
